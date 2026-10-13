@@ -1,6 +1,6 @@
 [project]
 name = "python-byte-string-decoder"
-version = "0.1.0"
+version = "0.1.1"
 description = "Parses Python string literals containing escape sequences, octal, hex, and named unicode escapes, into their unescaped values."
 requires-python = ">=3.10"
 dependencies = []
