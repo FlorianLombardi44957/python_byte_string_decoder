@@ -22,3 +22,10 @@ You have text that *looks like* Python source — escape sequences and all — a
 For `b`-prefixed literals, real CPython raises `ValueError` on `\u`, `\U`, and `\N{...}` escapes — bytes literals may only contain bytes. This library deliberately diverges: on `b`-prefixed input those escapes keep only the **low byte** of the code point (`\u0041` → `b'A'`, `\u00e9` → `b'\xe9'`). On str literals (no `b` prefix, or an explicit `u`) the full code point is encoded as UTF-8 (`"\u00e9"` → `b'\xc3\xa9'`). If you need strict CPython bytes-literal semantics, this library is not that — use `ast.literal_eval` and catch its errors.
 
 Octal escapes are capped at `\377` (one byte) and `\x` requires exactly two hex digits, matching CPython. Triple-quoted forms are supported; raw prefixes (`r`/`R`) disable escape processing entirely.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
